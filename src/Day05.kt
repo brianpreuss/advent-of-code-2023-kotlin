@@ -1,24 +1,21 @@
-import java.io.File
 import kotlin.math.max
 import kotlin.math.min
 
 fun main() {
-    val input = File("day05/input05.txt05.txt")
-        .readLines()
+    fun part1(input: List<String>) =
+        findMinLocation(lines = input, part = 1, useBruteForce = false, debug = false)
 
-    val debug = false
+    fun part2(input: List<String>) =
+        findMinLocation(lines = input, part = 2, useBruteForce = false, debug = false)
 
-    val minLocationNumberSeedPart1 = findMinLocation(lines = input, part = 1, useBruteForce = false, debug = debug)
-    printResult(result = minLocationNumberSeedPart1, debug = debug)
-    // testInput05.txt -> 35
-    // input05.txt -> 457535844
+    // test if implementation meets criteria from the description, like:
+    val testInput = readInput("Day05_test")
+    check(part1(testInput) == 35L)
+    check(part2(testInput) == 46L)
 
-
-    val minLocationNumberSeedPart2 = findMinLocation(lines = input, part = 2, useBruteForce = false, debug = debug)
-    printResult(result = minLocationNumberSeedPart2, debug = debug)
-    // testInput05.txt -> 46
-    // input05.txt -> OOM
-    // input05.txt -> 41222968 (dauert lange) => jetzt schnell
+    val input = readInput("Day05")
+    part1(input).println()
+    part2(input).println()
 }
 
 private fun findMinLocation(lines: List<String>, part: Int, useBruteForce: Boolean, debug: Boolean): Long {
@@ -138,9 +135,10 @@ private fun minByLocationRanges(seedRanges: List<LongRange>, rangesPerSections: 
         }
 
         sectionRangeOffsets.forEach { rangeOffset ->
-            println("=> processing rangeOffset $rangeOffset")
-
-            println("--> tmpRanges is $tmpRanges")
+            if (debug) {
+                println("=> processing rangeOffset $rangeOffset")
+                println("--> tmpRanges is $tmpRanges")
+            }
 
             tmpRanges.forEach { tmpRange ->
                 val maxStart = max(tmpRange.first, rangeOffset.sourceRange.first)
@@ -236,16 +234,3 @@ data class Seed(
     val humidityNumber: Long,
     val locationNumber: Long
 )
-
-private fun printResult(result: Long, debug: Boolean) {
-    if (debug) {
-        println()
-        println("*************************")
-    }
-
-    println(result)
-
-    if (debug) {
-        println("*************************")
-    }
-}
